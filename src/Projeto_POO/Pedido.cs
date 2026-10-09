@@ -1,7 +1,7 @@
 using System.Text;
 
 namespace XulambsFoods {
-    public class Pedido {
+    public abstract class Pedido {
         private static int s_ultimoPedido=0;
         private int _idPedido;
         private DateOnly _data;
@@ -20,6 +20,16 @@ namespace XulambsFoods {
             return _aberto;
         } //virtual: autorização para ser sobrescrito.
 
+        protected double ValorItens()
+        {
+            double preco = 0d;
+            foreach (Pizza pizza in _pizzas)
+            {
+                preco += pizza.CalcularValorFinal();
+            }
+            return preco;
+        }
+
         public int Adicionar(Pizza pizza) {
             if (PodeAdicionar() && pizza != null)
                 _pizzas.AddLast(pizza);
@@ -30,13 +40,7 @@ namespace XulambsFoods {
             _aberto = false;
         }
 
-        public virtual double PrecoAPagar() {
-            double preco = 0d;
-            foreach (Pizza pizza in _pizzas) {
-                preco += pizza.CalcularValorFinal();
-            }
-            return preco;
-        }
+        public abstract double PrecoAPagar();
 
         protected string CabecalhoPedido()
         {

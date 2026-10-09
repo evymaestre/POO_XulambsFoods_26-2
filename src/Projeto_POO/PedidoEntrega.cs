@@ -30,8 +30,7 @@ namespace XulambsFoods {
         }
 
         public override double PrecoAPagar() {
-            double valorPizzas = base.PrecoAPagar();
-            return valorPizzas + ValorTaxa();
+            return ValorItens() + ValorTaxa();
         }
 
         protected override string RodapePedido()
