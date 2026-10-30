@@ -5,11 +5,11 @@ namespace XulambsFoods {
         private static int s_ultimoPedido=0;
         private int _idPedido;
         private DateOnly _data;
-        protected LinkedList<Pizza> _pizzas;
+        protected LinkedList<ItemPedido> _itemPedido;
         private bool _aberto;
 
         public Pedido() {
-            _pizzas = new LinkedList<Pizza>();
+            _itemPedido = new LinkedList<ItemPedido>();
             _aberto = true;
             _data =  DateOnly.FromDateTime(DateTime.Now);
             s_ultimoPedido++;
@@ -21,13 +21,13 @@ namespace XulambsFoods {
                 throw new PedidoFechadoException();
         } //virtual: autorização para ser sobrescrito.
 
-        public int Adicionar(Pizza pizza) {
-            if (pizza == null)
-                throw new ArgumentNullException("Pizza não foi criada");
+        public int Adicionar(ItemPedido item) {
+            if (item == null)
+                throw new ArgumentNullException("Item não foi criado");
             
             PodeAdicionar();
-            _pizzas.AddLast(pizza);
-            return _pizzas.Count;
+            _itemPedido.AddLast(item);
+            return _itemPedido.Count;
         }
 
         public void FecharPedido() {
@@ -38,7 +38,7 @@ namespace XulambsFoods {
         
         protected double ValorItens(){
             double preco = 0d;
-            foreach (Pizza pizza in _pizzas) {
+            foreach (Pizza pizza in _itemPedido) {
                 preco += pizza.CalcularValorFinal();
             }
             return preco;
@@ -52,9 +52,9 @@ namespace XulambsFoods {
                 estado = "aberto";
             relat.AppendLine($"Pedido {estado}.");
             int i = 0;
-            foreach (Pizza pizza in _pizzas)
+            foreach (ItemPedido item in _itemPedido)
             {
-                relat.AppendLine($"{++i:D2} {pizza.ToString()}");
+                relat.AppendLine($"{++i:D2} {item.ToString()}");
             }
             return relat.ToString();
         }
